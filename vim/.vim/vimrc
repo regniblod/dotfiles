@@ -67,8 +67,33 @@ set relativenumber
 let g:lion_squeeze_spaces=1
 
 " make test commands execute using dispatch.vim
-let test#strategy = "vimterminal"
+let test#strategy="vimterminal"
 
 " sets the update time for async tasks
 set updatetime=100
 
+" update session automatically as you exit vim
+let g:startify_session_persistence=1
+
+" simplify the startify list to just recent files and sessions
+let g:startify_lists = [
+  \ { 'type': 'sessions',  'header': ['   Sessions'] },
+  \ { 'type': 'files',     'header': ['   Recent files'] },
+  \ ]
+
+" fancy custom header
+let g:startify_custom_header = [
+  \ '  ',
+  \ '  ██████  ██    ██ ██ ██      ██████      ███████  ██████  ███    ███ ███████ ████████ ██   ██ ██ ███    ██  ██████ ',
+  \ '  ██   ██ ██    ██ ██ ██      ██   ██     ██      ██    ██ ████  ████ ██         ██    ██   ██ ██ ████   ██ ██      ',
+  \ '  ██████  ██    ██ ██ ██      ██   ██     ███████ ██    ██ ██ ████ ██ █████      ██    ███████ ██ ██ ██  ██ ██   ███ ',
+  \ '  ██   ██ ██    ██ ██ ██      ██   ██          ██ ██    ██ ██  ██  ██ ██         ██    ██   ██ ██ ██  ██ ██ ██    ██ ',
+  \ '  ██████   ██████  ██ ███████ ██████      ███████  ██████  ██      ██ ███████    ██    ██   ██ ██ ██   ████  ██████  ',
+  \ '                                                                                                                    ',
+  \ '                           █████  ██     ██ ███████ ███████  ██████  ███    ███ ███████ ',
+  \ '                          ██   ██ ██     ██ ██      ██      ██    ██ ████  ████ ██      ',
+  \ '                          ███████ ██  █  ██ █████   ███████ ██    ██ ██ ████ ██ █████ ',
+  \ '                          ██   ██ ██ ███ ██ ██           ██ ██    ██ ██  ██  ██ ██    ',
+  \ '                          ██   ██  ███ ███  ███████ ███████  ██████  ██      ██ ███████ ',
+  \ '   ',
+  \ ]
