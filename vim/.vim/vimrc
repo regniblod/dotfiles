@@ -1,4 +1,9 @@
-" Info here?
+"  _    ___                    
+" | |  / (_)___ ___  __________
+" | | / / / __ `__ \/ ___/ ___/
+" | |/ / / / / / / / /  / /__  
+" |___/_/_/ /_/ /_/_/   \___/  
+                             
 
 " install plugin manager
 if empty(glob('~/.vim/autoload/plug.vim'))
