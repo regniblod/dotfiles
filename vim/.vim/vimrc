@@ -1,0 +1,68 @@
+" Info here?
+
+" Install plugin manager
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+
+Plug 'tpope/vim-sensible' 			" basic config so I don't have to write it here
+Plug 'arcticicestudio/nord-vim' 		" colorscheme
+Plug 'preservim/nerdtree'			" file explorer
+Plug 'ryanoasis/vim-devicons'			" icons in the file explorer
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'	" file icons in NERDTree
+Plug 'vim-airline/vim-airline' 			" status bar
+Plug 'vim-airline/vim-airline-themes'		" themes for vim-airline
+Plug 'airblade/vim-gitgutter'			" shows git status on lines
+Plug 'machakann/vim-highlightedyank'		" highlights yanked text
+Plug 'tommcdo/vim-lion'				" aligns text by some character
+Plug 'vim-test/vim-test'			" test runner
+Plug 'tpope/vim-surround'			" easily delete, change and add surroundings in pairs
+Plug 'tpope/vim-repeat'				" allow repeating (some) plugin commands
+Plug 'tpope/vim-speeddating'			" increment/decrement dates
+Plug 'mhinz/vim-startify'			" fancy start page
+
+call plug#end()
+
+colorscheme nord
+" Set vim-airline theme
+let g:airline_theme='nord'
+
+" Reload vim config automagically after editing
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+" Shortcut to edit vimrc
+nnoremap <leader>cfg :split $MYVIMRC<CR>
+
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Shows relative line numbers
+set relativenumber 
+
+" Use the minimum necessary number of spaces
+let g:lion_squeeze_spaces=1
+
+" make test commands execute using dispatch.vim
+let test#strategy = "vimterminal"
+
+" Sets the update time for async tasks
+set updatetime=100
+
