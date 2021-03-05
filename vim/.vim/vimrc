@@ -29,6 +29,15 @@ Plug 'tpope/vim-surround'			" easily delete, change and add surroundings in pair
 Plug 'tpope/vim-repeat'				" allow repeating (some) plugin commands
 Plug 'tpope/vim-speeddating'			" increment/decrement dates
 Plug 'mhinz/vim-startify'			" fancy start page
+Plug 'ap/vim-css-color'				" show css colors
+Plug 'rhysd/git-messenger.vim'			" git blame
+Plug 'tpope/vim-fugitive'			" git bindings
+Plug 'chaoren/vim-wordmotion'			" more useful word motions
+Plug 'tpope/vim-commentary'			" easily comment/uncomment
+Plug 'junegunn/fzf'				" fuzzy finder
+Plug 'junegunn/fzf.vim'				" fuzzy finder integration
+Plug 'airblade/vim-rooter'			" automagically find project root
+Plug 'tpope/vim-sleuth'				" automatically adjust 'shiftwidth' and 'expandtab'
 
 call plug#end()
 
@@ -44,7 +53,7 @@ augroup myvimrc
 augroup END
 
 " shortcut to edit vimrc
-nnoremap <leader>cfg :split $MYVIMRC<CR>
+nnoremap <leader>cfg :vsplit $MYVIMRC<CR>
 
 " start NERDTree only if a file/directory is specified
 autocmd StdinReadPre * let s:std_in=1
@@ -54,6 +63,9 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in
 " if another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" remove useless text
+let g:NERDTreeMinimalUI = 1
 
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
@@ -75,25 +87,44 @@ set updatetime=100
 " update session automatically as you exit vim
 let g:startify_session_persistence=1
 
+" add custom footer to startify
+let g:startify_custom_footer = 'map(startify#fortune#boxed(), "\"   \".v:val")'
+
+" use fancy boxes in startify footer
+let g:startify_fortune_use_unicode = 1
+
 " simplify the startify list to just recent files and sessions
-let g:startify_lists = [
-  \ { 'type': 'sessions',  'header': ['   Sessions'] },
-  \ { 'type': 'files',     'header': ['   Recent files'] },
-  \ ]
+ let g:startify_lists = [
+   \ { 'type': 'sessions', 'header': ['   Sessions'] },
+   \ { 'type': 'files',    'header': ['   Recent files'] },
+   \ ]
 
 " fancy custom header
 let g:startify_custom_header = [
-  \ '  ',
-  \ '  ██████  ██    ██ ██ ██      ██████      ███████  ██████  ███    ███ ███████ ████████ ██   ██ ██ ███    ██  ██████ ',
-  \ '  ██   ██ ██    ██ ██ ██      ██   ██     ██      ██    ██ ████  ████ ██         ██    ██   ██ ██ ████   ██ ██      ',
-  \ '  ██████  ██    ██ ██ ██      ██   ██     ███████ ██    ██ ██ ████ ██ █████      ██    ███████ ██ ██ ██  ██ ██   ███ ',
-  \ '  ██   ██ ██    ██ ██ ██      ██   ██          ██ ██    ██ ██  ██  ██ ██         ██    ██   ██ ██ ██  ██ ██ ██    ██ ',
-  \ '  ██████   ██████  ██ ███████ ██████      ███████  ██████  ██      ██ ███████    ██    ██   ██ ██ ██   ████  ██████  ',
-  \ '                                                                                                                    ',
-  \ '                           █████  ██     ██ ███████ ███████  ██████  ███    ███ ███████ ',
-  \ '                          ██   ██ ██     ██ ██      ██      ██    ██ ████  ████ ██      ',
-  \ '                          ███████ ██  █  ██ █████   ███████ ██    ██ ██ ████ ██ █████ ',
-  \ '                          ██   ██ ██ ███ ██ ██           ██ ██    ██ ██  ██  ██ ██    ',
-  \ '                          ██   ██  ███ ███  ███████ ███████  ██████  ██      ██ ███████ ',
-  \ '   ',
+  \ '   ███    ███  ██████  ██████  ███    ██ ██ ███    ██  ██████  ██ ',
+  \ '   ████  ████ ██    ██ ██   ██ ████   ██ ██ ████   ██ ██       ██ ',
+  \ '   ██ ████ ██ ██    ██ ██████  ██ ██  ██ ██ ██ ██  ██ ██   ███ ██ ',
+  \ '   ██  ██  ██ ██    ██ ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██    ',
+  \ '   ██      ██  ██████  ██   ██ ██   ████ ██ ██   ████  ██████  ██ ',
+  \ '',
+  \ '',
   \ ]
+
+" add number of search matches in bottom bar
+set shortmess-=S
+
+" open fzf
+nnoremap <C-P> :FZF<CR>
+
+" open rg
+nnoremap <C-A> :Rg<CR>
+
+" lists current buffers
+nnoremap <C-E> :Buffers<CR>
+
+" when forgetting to sudo before editing a file which require
+" root privileges, use w!! instead of w! to save changes
+cmap w!! w !sudo tee % >/dev/null
+
+" Remove all trailing whitespaces right before saving
+autocmd BufWritePre * :%s/\s\+$//e
