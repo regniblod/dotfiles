@@ -1,9 +1,9 @@
-"  _    ___                    
+"  _    ___
 " | |  / (_)___ ___  __________
 " | | / / / __ `__ \/ ___/ ___/
-" | |/ / / / / / / / /  / /__  
-" |___/_/_/ /_/ /_/_/   \___/  
-                             
+" | |/ / / / / / / / /  / /__
+" |___/_/_/ /_/ /_/_/   \___/
+
 
 " install plugin manager
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -38,6 +38,10 @@ Plug 'junegunn/fzf'				" fuzzy finder
 Plug 'junegunn/fzf.vim'				" fuzzy finder integration
 Plug 'airblade/vim-rooter'			" automagically find project root
 Plug 'tpope/vim-sleuth'				" automatically adjust 'shiftwidth' and 'expandtab'
+Plug 'vim-scripts/indentpython.vim'		" better indentation for Python
+Plug 'jiangmiao/auto-pairs'			" insert or delete brackets, parens, quotes in pair
+Plug 'sheerun/vim-polyglot'			" a collection of language packs for Vim
+Plug 'fatih/vim-go'   " better vim support
 
 call plug#end()
 
@@ -73,7 +77,7 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
 " shows relative line numbers
-set relativenumber 
+set relativenumber
 
 " use the minimum necessary number of spaces
 let g:lion_squeeze_spaces=1
@@ -99,17 +103,6 @@ let g:startify_fortune_use_unicode = 1
    \ { 'type': 'files',    'header': ['   Recent files'] },
    \ ]
 
-" fancy custom header
-let g:startify_custom_header = [
-  \ '   ███    ███  ██████  ██████  ███    ██ ██ ███    ██  ██████  ██ ',
-  \ '   ████  ████ ██    ██ ██   ██ ████   ██ ██ ████   ██ ██       ██ ',
-  \ '   ██ ████ ██ ██    ██ ██████  ██ ██  ██ ██ ██ ██  ██ ██   ███ ██ ',
-  \ '   ██  ██  ██ ██    ██ ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██    ',
-  \ '   ██      ██  ██████  ██   ██ ██   ████ ██ ██   ████  ██████  ██ ',
-  \ '',
-  \ '',
-  \ ]
-
 " add number of search matches in bottom bar
 set shortmess-=S
 
@@ -126,5 +119,20 @@ nnoremap <C-E> :Buffers<CR>
 " root privileges, use w!! instead of w! to save changes
 cmap w!! w !sudo tee % >/dev/null
 
-" Remove all trailing whitespaces right before saving
+" remove all trailing whitespaces right before saving
 autocmd BufWritePre * :%s/\s\+$//e
+
+" ignore pyc files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
+" share clipboard with the OS
+set clipboard=unnamed
+
+" easier split movements
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" show what command I'm typing
+set showcmd
