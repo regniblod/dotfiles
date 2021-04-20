@@ -16,15 +16,21 @@ ENABLE_CORRECTION="true"
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-plugins=(git colored-man-pages colorize cp extract safe-paste docker zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git colored-man-pages colorize cp extract safe-paste docker zsh-autosuggestions zsh-syntax-highlighting vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
 autoload -U promptinit; promptinit
 prompt pure
 
-export PATH="$PATH:~/.local/bin"
+# Enable vi mode
+bindkey -v
+
+path+=~/.local/bin
+path+=~/google-cloud-sdk/bin
+path+=~/scripts
 
 alias dps='docker ps --format "table {{.Names}}\t{{.Ports}}" | sed 1d | sort'
 alias python=python3
+alias installed-pkgs='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
 
