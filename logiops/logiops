@@ -1,6 +1,105 @@
+# Copy this config to /etc/logid.cfg and restart logid service
 devices: ({
 	# Put the name of the device here
 	name: "Wireless Mouse MX Master 3";
+	dpi: 2000;
+	smartshift: {
+		on: true;
+		# 1-255 integer
+		threshold: 200;
+		default_threshold: 200;
+	};
+	hiresscroll: {
+		hires: true;
+		invert: false;
+		target: false;
+		up: {
+			mode: "Axis";
+			axis: "REL_WHEEL_HI_RES";
+			axis_multiplier: 6;
+		},
+		down: {
+			mode: "Axis";
+			axis: "REL_WHEEL_HI_RES";
+			axis_multiplier: -6;
+		}
+	};
+	buttons: ({
+		# Gesture Button
+		cid: 0xc3;
+		action = {
+			type: "Gestures";
+			gestures: ({
+				# Toggle fullscreen of current window - This needs custom keybinding (current: GnomeWM)
+				direction: "Up";
+				mode: "OnFewPixels";
+				pixels: 350;
+				action = {
+					type: "Keypress";
+					keys: ["KEY_LEFTALT", "KEY_F11"];
+				};
+			}, {
+				# Capture selective screenshot - This needs custom keybinding (current: Gnome keyboard shortcut)
+				direction: "Down";
+				mode: "OnFewPixels";
+				pixels: 500;
+				action = {
+					type: "Keypress";
+					keys: ["KEY_LEFTCTRL", "KEY_LEFTMETA", "KEY_PRINT"];
+				};
+			}, {
+				# Scroll tabs - left
+				direction: "Left";
+				mode: "OnFewPixels";
+				pixels: 250;
+				action = {
+					type: "Keypress";
+					keys: ["KEY_LEFTCTRL", "KEY_PAGEDOWN"];
+				};
+			}, {
+				# Scroll tabs - right
+				direction: "Right";
+				mode: "OnFewPixels";
+				pixels: 250;
+				action = {
+					type: "Keypress";
+					keys: ["KEY_LEFTCTRL", "KEY_PAGEUP"];
+				}
+			}, {
+				# This button is being used as toggle mute (system-wide) - This needs custom keybinding (current: Gnome keyboard shortcut)
+				direction: "None";
+				mode: "OnRelease";
+				action = {
+					type: "Keypress";
+					keys: ["KEY_LEFTMETA"];
+				}
+			});
+		};
+	}, {
+		# Toggle SmartShift
+		cid: 0xc4;
+		action = {
+			type = "ToggleSmartshift";
+		};
+	}, {
+		# Back Button (has 0x54 too)
+		cid: 0x53;
+		action = {
+			type :  "Keypress";
+			keys: ["KEY_LEFTMETA", "KEY_LEFTCTRL", "KEY_UP"];
+		};
+	}, {
+		# Forward Button (has 0x57 too)
+		cid: 0x56;
+		action = {
+			type :  "Keypress";
+			keys: ["KEY_LEFTMETA", "KEY_LEFTCTRL", "KEY_DOWN"];
+		};
+	});
+},
+{
+	# Put the name of the device here
+	name: "Wireless Mouse MX Master";
 	dpi: 2000;
 	smartshift: {
 		on: true;
